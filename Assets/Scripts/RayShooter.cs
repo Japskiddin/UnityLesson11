@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class RayShooter : MonoBehaviour
 {
+    [SerializeField] private AudioSource soundSource;
+    [SerializeField] private AudioClip hitWallSound; // ссылаемся на два звуковых файла, которые нужно воспроизвести
+    [SerializeField] private AudioClip hitEnemySound;
+
     private Camera _camera;
 
     // Start is called before the first frame update
@@ -27,8 +31,10 @@ public class RayShooter : MonoBehaviour
                 ReactiveTarget target = hitObject.GetComponent<ReactiveTarget>();
                 if (target != null) { // проверяем наличие у этого объекта компонента ReactiveTarget
                     target.ReactToHit(); // вызов метода для мишени
+                    soundSource.PlayOneShot(hitEnemySound);
                 } else {
                     StartCoroutine(SphereIndicator(hit.point)); // запуск сопрограммы
+                    soundSource.PlayOneShot(hitWallSound);
                 }
             }
         }
